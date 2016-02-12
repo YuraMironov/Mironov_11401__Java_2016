@@ -13,6 +13,7 @@ public class AnimalClass implements AnimalInterface, Eatable, Voicable, Biteble,
     int age;
     String name;
     String voice;
+    FoodClass likeFood;
     @Override
     public boolean isAngry() {
         return angry;
@@ -78,17 +79,17 @@ public class AnimalClass implements AnimalInterface, Eatable, Voicable, Biteble,
     }
 
     @Override
-    public int getAge(AnimalInterface animal) {
-        return 0;
+    public int getAge() {
+        return age;
     }
 
     @Override
-    public int getHeight(AnimalInterface animal) {
-        return 0;
+    public int getHeight() {
+        return height;
     }
 
     @Override
-    public int getWeight(AnimalInterface animal) {
-        return 0;
+    public int getWeight() {
+        return weight;
     }
 }

@@ -10,5 +10,6 @@ public class Cat extends AnimalClass {
         this.weight = weight;
         voice = "Myau";
         name = "Cat";
+        likeFood = new Milk();
     }
 }

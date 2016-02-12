@@ -10,5 +10,6 @@ public class Tigr extends AnimalClass {
         this.weight = weight;
         voice = "Rrrr";
         name = "Tigr";
+        likeFood = new Meat();
     }
 }

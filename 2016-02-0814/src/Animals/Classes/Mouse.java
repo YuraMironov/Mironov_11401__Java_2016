@@ -10,5 +10,6 @@ public class Mouse extends AnimalClass {
         this.weight = weight;
         voice = "Pi-Pi-Pi";
         name = "mouse";
+        likeFood = new Pizza();
     }
 }
