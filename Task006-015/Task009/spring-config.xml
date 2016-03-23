@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="simpleComplexNumber" class="Homework1.Task009.ComplexNumber"/>
+    <bean id="a" class="Homework1.Task009.ComplexNumber" scope="prototype">
+        <constructor-arg name="a" value="1"/>
+        <constructor-arg name="b" value="1"/>
+    </bean>
+    <bean id="b" class="Homework1.Task009.ComplexNumber" scope="prototype">
+        <constructor-arg name="a" value="2"/>
+        <constructor-arg name="b" value="2"/>
+    </bean>
+    <bean id="c" class="Homework1.Task009.ComplexNumber" scope="prototype">
+        <constructor-arg name="a" value="3"/>
+        <constructor-arg name="b" value="3"/>
+    </bean>
+    <bean id="d" class="Homework1.Task009.ComplexNumber" scope="prototype">
+        <constructor-arg name="a" value="4"/>
+        <constructor-arg name="b" value="4"/>
+    </bean>
+    <bean id="simpleComplexMatrix2x2" class="Homework1.Task009.ComplexMatrix2x2" scope="prototype" />
+    <bean id="notSimpleComplexMatrix2x2" class="Homework1.Task009.ComplexMatrix2x2">
+        <constructor-arg name="k1" ref="a"/>
+        <constructor-arg name="k2" ref="b"/>
+        <constructor-arg name="k3" ref="c"/>
+        <constructor-arg name="k4" ref="d"/>
+    </bean>
+    <bean id="complexNumber10" class="Homework1.Task009.ComplexNumber" scope="prototype">
+        <constructor-arg name="a" value="1"/>
+        <constructor-arg name="b" value="0"/>
+    </bean>
+
+    <bean id="complexNumber77" class="Homework1.Task009.ComplexNumber" scope="prototype">
+        <constructor-arg name="a" value="7"/>
+        <constructor-arg name="b" value="7"/>
+    </bean>
+    <bean id="complexVector2D" class="Homework1.Task009.ComplexVector2D" scope="prototype">
+        <property ref="complexNumber10" name="x"/>
+        <property ref="complexNumber10" name="y"/>
+    </bean>
+    <bean id="resComplexVector2D" class="Homework1.Task009.ComplexVector2D" scope="prototype">
+        <constructor-arg ref="c"/>
+        <constructor-arg ref="complexNumber77"/>
+    </bean>
+
+</beans>

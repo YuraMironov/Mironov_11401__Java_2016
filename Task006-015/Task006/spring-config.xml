@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       default-init-method="wakeUp"
+       default-autowire-candidates="Homework1.Task006.classes.*"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="cat" class="Homework1.Task006.Classes.Cat">
+        <constructor-arg value="1"/>
+        <constructor-arg value="1"/>
+        <constructor-arg value="1"/>
+    </bean>
+
+    <bean id="tigr" class="Homework1.Task006.Classes.Tigr">
+        <constructor-arg value="1"/>
+        <constructor-arg value="1"/>
+        <constructor-arg value="1"/>
+    </bean>
+
+
+    <bean id="dog" class="Homework1.Task006.Classes.Dog">
+        <constructor-arg value="1"/>
+        <constructor-arg value="1"/>
+        <constructor-arg value="1"/>
+    </bean>
+    <bean id="mouse" class="Homework1.Task006.Classes.Mouse">
+        <constructor-arg value="1"/>
+        <constructor-arg value="1"/>
+        <constructor-arg value="1"/>
+    </bean>
+</beans>
