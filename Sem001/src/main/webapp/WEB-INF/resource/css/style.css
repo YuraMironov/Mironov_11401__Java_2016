@@ -296,3 +296,10 @@ a{
 .modal_href a{
     color: black;
 }
+.login-login-form{
+    border-radius: 1%;
+    margin-top: 15%;
+    margin-left: 35%;
+    width: auto;
+    float: left;
+}

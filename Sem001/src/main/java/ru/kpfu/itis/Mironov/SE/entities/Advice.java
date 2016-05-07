@@ -1,5 +1,7 @@
 package ru.kpfu.itis.Mironov.SE.entities;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import javax.persistence.*;
 
 /**
@@ -31,7 +33,7 @@ public class Advice {
     }
 
     public void setAdvname(String advname) {
-        this.advname = advname;
+        this.advname = StringEscapeUtils.escapeHtml4(advname);
     }
 
     @Column(name = "advbody")
@@ -40,7 +42,7 @@ public class Advice {
     }
 
     public void setAdvbody(String advbody) {
-        this.advbody = advbody;
+        this.advbody = StringEscapeUtils.escapeHtml4(advbody);
     }
 
     @Column(name = "filesrc")
@@ -49,7 +51,7 @@ public class Advice {
     }
 
     public void setFilesrc(String filesrc) {
-        this.filesrc = filesrc;
+        this.filesrc = filesrc.indexOf("http") == 0 ? filesrc : "";
     }
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)

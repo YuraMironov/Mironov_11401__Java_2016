@@ -1,3 +1,4 @@
+<#assign form=JspTaglibs["http://www.springframework.org/tags/form"]>
 <script src="../resource/js/jquery-2.1.4.js" type="application/javascript"></script>
 <script src="../resource/js/myvalide.js" charset="UTF-8" type="text/javascript"></script>
 <script src="../resource/js/jquery.dotdotdot.js" type="text/javascript"></script>
@@ -62,7 +63,7 @@
                         <input id="j_username" name="j_username" class="form-control" placeholder="Email address"
                                size="20" maxlength="50" type="email" required autofocus/>
                     <#--<input type="email" id="inputEmail"  name="name"-->
-                    <#--<#if model["erLogin"]??>  value="${model["erLogin"]}" </#if>-->
+                    <#--<#if model["erLogin"]??>  passwordField="${model["erLogin"]}" </#if>-->
                     </div>
                     <div class="password">
                         <label for="password" class="sr-only">Password</label>

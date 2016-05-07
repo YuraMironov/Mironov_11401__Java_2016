@@ -29,7 +29,7 @@
                     <input type="text" class="form-control" placeholder="Username" name="j_username"/>
                 </div>
                 <div>
-                    <input type="password" class="form-control" placeholder="Password" name="j_password"/>
+                    <input type="passwordField" class="form-control" placeholder="Password" name="j_password"/>
                 </div>
                 <div>
                     <input id="remember_me" name="_spring_security_remember_me" type="checkbox"/>

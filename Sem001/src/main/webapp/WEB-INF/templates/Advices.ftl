@@ -105,36 +105,48 @@
 </#list>
 
 
-    <div class="modal fade" id="myModalAddAdv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
+    <div class="modal fade<#if model["validInfo"]??> in</#if>" id="myModalAddAdv" tabindex="-1"
+                            role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true"<#if model["validInfo"]??> style="display: block;"</#if>>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                <#if !model["validInfo"]??> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></#if>
                     <h4 class="modal-title">Добавить совет</h4>
                 </div>
                 <div class="panel-body">
-                    <form action="/advices" method="post">
+                    <@form.form commandName="adviceadd_form" action="/advices" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <br>
-                        <p><input type="text" class="form-control" name="title" placeholder="Ваш заголовок" width="30%">
+                        <p><@form.input path="title" type="text" class="form-control" name="title"
+                            placeholder="Ваш заголовок" width="30%"/>
+                        <div class="res"><@form.errors path="title"/></div>
                         </p>
+                        <p><@form.input path="body" type="text" class="form-control" name="body" placeholder="Ваш совет"/>
+                        <div class="res"><@form.errors path="body"/></div></p>
 
-                        <p><input type="text" class="form-control" name="body" placeholder="Ваш совет"></p>
-
-                        <p><input type="text" class="form-control" name="filesrc" placeholder="Ссылка на картинку"></p>
+                        <p><@form.input path="filesrc" type="text" class="form-control" name="filesrc"
+                            placeholder="Ссылка на картинку"/>
+                        <div class="res"><@form.errors path="filesrc"/></div></p>
                         <center>
                             <button type="submit" class="btn btn-default">Добавить совет</button>
                         </center>
-                    </form>
+                    </@form.form>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <#if model["validInfo"]??><a href="/advices"></#if>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <#if model["validInfo"]??>Вернуться к советам!<#else>Закрыть</#if>
+                    </button>
+                    <#if model["validInfo"]??></a> </#if>
                 </div>
             </div>
         </div>
     </div>
 
 <#include "DownBlockUserBlock.ftl">
+    <#if model["validInfo"]??><div class="modal-backdrop fade in"></div></#if>
 </body>
 </html>

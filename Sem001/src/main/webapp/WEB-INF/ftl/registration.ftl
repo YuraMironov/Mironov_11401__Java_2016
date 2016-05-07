@@ -41,11 +41,11 @@
                     <@form.errors path="email" cssStyle="color: red;" />
                 </div>
                 <div>
-                    <@form.password path="password" class="form-control" placeholder="Password"/>
-                    <@form.errors path="password" cssStyle="color: red;" />
+                    <@form.passwordField path="passwordField" class="form-control" placeholder="Password"/>
+                    <@form.errors path="passwordField" cssStyle="color: red;" />
                 </div>
                 <div>
-                    <@form.password path="confirmPassword" class="form-control" placeholder="confirm password"/>
+                    <@form.passwordField path="confirmPassword" class="form-control" placeholder="confirm passwordField"/>
                     <@form.errors path="confirmPassword" cssStyle="color: red;" />
                 </div>
                 <div>

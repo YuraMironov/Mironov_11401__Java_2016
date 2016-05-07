@@ -8,13 +8,14 @@ import ru.kpfu.itis.Mironov.SE.forms.constarint.validator.UniqueEmail;
 import javax.validation.constraints.Pattern;
 
 /**
- * Created by Rus on 25.04.2016.
+ * Created by Юра on 07.05.2016.
  */
 @PasswordDuplicate(passwordField = "password", passwordField2 = "password2")
-public class RegistrationForm {
+public class ChangePassForm {
     @NotEmpty(message = "Поле обязательно для заполнения!")
+    @Length(min = 6, max = 30)
     @Pattern(regexp = "[a-zA-Z0-9_]+", message = "Только латинские буквы и цифры!")
-    private String login;
+    private String oldPass;
     @NotEmpty(message = "Поле обязательно для заполнения!")
     @Length(min = 6, max = 30)
     @Pattern(regexp = "[a-zA-Z0-9_]+", message = "Только латинские буквы и цифры!")
@@ -25,34 +26,12 @@ public class RegistrationForm {
     @Pattern(regexp = "[a-zA-Z0-9_]+", message = "Только латинские буквы и цифры!")
     private String password2;
 
-
-    @NotEmpty(message = "Поле обязательно для заполнения!")
-    @Pattern(regexp = "[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+", message = "Введите правильный адресс!")
-    @UniqueEmail
-    private String email;
-
-
-    @NotEmpty(message = "Поле обязательно для заполнения!")
-    @Pattern(regexp = "[0-9]{5}", message = "Введите 5 главных цифр!")
-    private String schetchik;
-
-    public RegistrationForm(String login, String password, String password2, String email, Integer last){
-        setLogin(login);
-        setPassword(password);
-        setPassword2(password2);
-        setEmail(email);
-        setSchetchik(last + "");
+    public String getOldPass() {
+        return oldPass;
     }
 
-    public RegistrationForm() {
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public void setOldPass(String oldPass) {
+        this.oldPass = oldPass;
     }
 
     public String getPassword() {
@@ -71,29 +50,6 @@ public class RegistrationForm {
         this.password2 = password2;
     }
 
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSchetchik() {
-        return schetchik;
-    }
-
-    public void setSchetchik(String schetchik) {
-        this.schetchik = schetchik;
-    }
-    public Integer getLast() {
-        return Integer.parseInt(getSchetchik());
-    }
-
-    public void setLast(String last) {
-        setSchetchik(last + "");
-    }
-
-
 }
+
+

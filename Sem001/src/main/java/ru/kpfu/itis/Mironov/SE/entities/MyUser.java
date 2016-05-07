@@ -26,6 +26,9 @@ public class MyUser implements UserDetails {
     private String role;
     private Tarif tarif;
 
+
+    private boolean enabled;
+
     private Firm firm;
     @Id
     @Column(name = "id")
@@ -82,9 +85,14 @@ public class MyUser implements UserDetails {
         return true;
     }
 
-    @Transient
+    @Column(name = "enabled")
     public boolean isEnabled() {
-        return true;
+        System.out.println(enabled + "user");
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void setPassword(String password) {
@@ -140,6 +148,8 @@ public class MyUser implements UserDetails {
     public void setRole(String role) {
         this.role = role;
     }
+
+
 
 //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 //    @JoinColumn(name = "user_tarif")

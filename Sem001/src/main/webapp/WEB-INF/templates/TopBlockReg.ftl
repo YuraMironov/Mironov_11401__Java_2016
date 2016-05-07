@@ -4,8 +4,8 @@
         <div class="bs-example">
             <div class="alert alert-success fade in">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4>Вы успешно зарегестрированы!!</h4>
-                <p>Пожалуйста, авторизируйтесь!</p>
+                <h4>Вы успешно зарегестрирова<#if model["currentUser"]??>ли нового пользователя!!<#else>ны!!<p>Пожалуйста, авторизируйтесь!</p></#if>
+                </h4>
                 <p><a href="/home">
                     <button type="button" class="btn btn-danger">На главную!!</button>
                 </a></p>

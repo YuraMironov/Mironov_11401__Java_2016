@@ -18,6 +18,7 @@
 <body onload="init()">
 <#if model["currentUser"]??>
     <#include "TopBlock.ftl">
+
     <#if dolg?? && schetNumber??>
     <div class="er_mes">
         <center>
@@ -32,12 +33,11 @@
                     <p>${dolg} рублей(рубля)!</p>
                     <p><a href="/home">
                         <button type="button" class="btn btn-danger">На главную!!</button>
-                    </a><form action="/userschet/pay" method="POST">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="dolg" value="${dolg}"/>
-                        <input type="hidden" name="lastNow" value="${lastNow}"/>
-                        <button type="submit" class="btn btn-danger">Оплатить</button>
-                    </form></p>
+                    </a>
+                        <a href="/userschet/pay?dolg=${dolg}&lastNow=${lastNow}">
+                            <button type="button" class="btn btn-danger">Оплатить</button>
+                        </a>
+                    </p>
                 </div>
             </div>
             <center>
@@ -47,7 +47,7 @@
     <div class="er_mes">
         <div class="bs-example">
             <div class="alert alert-danger fade in">
-                <#if activeUser.last = 99999>
+                <#if activeUser.schetchik = 99999>
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 </#if>
                 <h4>Внимание!</h4>
@@ -62,7 +62,7 @@
                 <p><a href="/home">
                     <button type="button" class="btn btn-danger">На главную!!</button>
                 </a>
-                    <#if model["currentUser"].last = 99999>
+                    <#if model["currentUser"].schetchik = 99999>
                         <a href="/pay?dolg=${dolg}&lastNow=${lastNow}">
                             <button type="button" class="btn btn-danger">Оплатить</button>
                         </a>
@@ -72,50 +72,73 @@
         </div>
     </div>
     </#if>
+    <#if (er_mes?? && er_mes = "payError") >
+    <div class="er_mes">
+        <div class="bs-example">
+            <div class="alert alert-danger fade in">
+                <h4>Внимание!</h4>
+
+                <p>Уважаемый, ${model["currentUser"].getLogin()}
+                </p>
+
+                <p>Что-то пошло не так...</p>
+
+                <p>Повторите операцию</p>
+
+                <p><a href="/userschet">
+                    <button type="button" class="btn btn-danger">Повторить!!</button>
+                </a>
+                </p>
+            </div>
+        </div>
+    </div>
+    </#if>
 <div class="content">
     <div class="SchetBlock">
-        <form action="/userschet" method="POST" onsubmit="return valideDate() && validSchetchik()">
+        <@form.form commandName="userschet_form" action="/userschet" method="POST" onsubmit="return (validSchetchik() && valideDate())">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <#if er_mes?? && er_mes = "uncor_tarif">
                 <center>Выбирите свой тариф!!!</center>
             </#if>
             <span class="label label-default">Номер счета</span>
-            <input type="number" max="99999999" id="schetNumber" name="schetNumber" class="form-control"
-                   placeholder="Ваш номер счета" required autofocus>
+            <@form.input path="schetNumber" type="number" id="schetNumber" name="schetNumber" class="form-control"
+                placeholder="Ваш номер счета"/>
+            <div class="res"><@form.errors path="schetNumber"/></div>
             <span class="label label-default">Дата установки</span>
-            <input type="text" id="date" name="date" class="form-control" placeholder="DD.MM.YYYY" required
-                   oninput="valideDate()">
+            <@form.input path="date" type="text" id="date" name="date" class="form-control" placeholder="DD.MM.YYYY"
+                oninput="return valideDate()"/>
 
-            <div id="res" class="res"></div>
+            <div id="res" class="res"><@form.errors path="date"/></div>
             <span class="label label-default">Текущие показания</span>
-            <input type="number" min="${model["currentUser"].getLast()}"
-                   max="99999" name="lastNow"
-                   id="schetchik" class="form-control" placeholder="Показания счетчика"
-                   required
-                   oninput="validSchetchik()">
+            <@form.input path="schetchik" type="number"
+                max="99999" name="schetchik"
+                id="schetchik" class="form-control" placeholder="Показания счетчика"
+                oninput="return validSchetchik()"/>
 
-            <div id="res2" class="res"></div>
+            <div id="res2" class="res"><@form.errors path="schetchik"/></div>
             <script type="application/javascript">
-                valideDate = function () {
-                    var string = $("#date").val();
-                    var regexp = new RegExp('([0-2][0-9]|3[01])\\.(0[0-9]|1[[0-2])\\.[0-9]{4}');
-                    var boolean = regexp.test(string);
-                    if (!boolean) {
-                        $("#res").html("проверьте на ([0-2][0-9]|3[01])\\.(0[0-9]|1[[0-2])\\.[0-9]{4}");
-                    } else {
-                        $("#res").html("");
-                    }
-                };
-                validSchetchik = function () {
-                    var string = $("#schetchik").val();
-                    var regexp = new RegExp('^[0-9]{5}$');
-                    var boolean = regexp.test(string);
-                    if (boolean) {
-                        $("#res2").html("");
-                    } else {
-                        $("#res2").html("[0-9]{5}")
-                    }
-                };
+            valideDate = function () {
+            var string = $("#date").val();
+            var regexp = new RegExp('([0-2][0-9]|3[01])\\.(0[0-9]|1[[0-2])\\.[0-9]{4}');
+            var boolean = regexp.test(string);
+            if (!boolean) {
+            $("#res").html("проверьте на ([0-2][0-9]|3[01])\\.(0[0-9]|1[[0-2])\\.[0-9]{4}");
+            } else {
+            $("#res").html("");
+            }
+            return boolean;
+            };
+            validSchetchik = function () {
+            var string = $("#schetchik").val();
+            var regexp = new RegExp('^[0-9]{5}$');
+            var boolean = regexp.test(string);
+            if (boolean) {
+            $("#res2").html("");
+            } else {
+            $("#res2").html("[0-9]{5}")
+            }
+            return boolean;
+            };
             </script>
             <span class="label label-default">Тариф</span>
             <select class="form-control" id="optionDefault" name="tarif" required>
@@ -126,7 +149,7 @@
             </select>
             <br>
             <button type="submit" class="btn btn-default">Посчитать задолженность</button>
-        </form>
+        </@form.form>
     </div>
 </div>
 </#if>
@@ -135,5 +158,11 @@
 <#--}-->
 <#--%>-->
 <#include "DownBlockUserBlock.ftl">
+
+<script>
+    $("#schetNumber").attr('required', '').attr('autofocus', '');
+    $("#date").attr('required', '');
+    $("#schetchik").attr('required', '');
+</script>
 </body>
 </html>

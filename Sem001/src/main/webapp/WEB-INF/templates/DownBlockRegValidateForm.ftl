@@ -2,21 +2,20 @@
     eqvEmail = function (request, response) {
         var x = false;
         $.ajax({
-            url: "/checkedEmail",
+            url: "/reg/checkedEmail",
             data: {"q": $("#email").val()},
             dataType: "json",
             async: false,
             success: function (response_data) {
-                if (response_data.results.length > 0) {
-                    x = false;
+                x = response_data.email == null;
+                if (!x) {
                     $("#res").html("Пользователь с таким электронным адрecом уже зарегестрирован в системе");
                 } else {
-                    x = true;
-                    $("#res").html("");
+                    $("#res").html("Электронный адрес свободен");
                 }
             }
         });
-        return x;
+        return x
     };
     eqvPass = function () {
         var pass = $("#pass").val();
