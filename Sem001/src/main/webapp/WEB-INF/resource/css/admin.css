@@ -1,0 +1,45 @@
+body{
+    background: #c7ddef;
+}
+.myNav{
+    float: left;
+    width: 200px;
+    background: orangered;
+    color: white;
+    position: fixed;
+    height: 100%;
+    margin: -8px 0 0 -8px;
+    padding: 10px 5px 20px 20px;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.myFooter {
+    /*width: 100%;*/
+    margin: -8px 0 0 200px;
+    padding: 30px 20px 20px 30px;
+    /*height: 100%;*/
+
+}
+.table{
+    /*text-align: center;*/
+    width: 80%;
+}
+/*.editDiv{*/
+    /*width: 180px;*/
+    /*margin-left: 210px;*/
+    /*position: fixed;*/
+    /*height: 100%;*/
+    /*background: linen;*/
+/*}*/
+/*.color-black{*/
+    /*color : black;*/
+/*}*/

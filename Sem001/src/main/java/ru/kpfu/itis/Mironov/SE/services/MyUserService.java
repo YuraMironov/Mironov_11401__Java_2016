@@ -3,7 +3,6 @@ package ru.kpfu.itis.Mironov.SE.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kpfu.itis.Mironov.SE.entities.Advice;
 import ru.kpfu.itis.Mironov.SE.entities.MyUser;
 import ru.kpfu.itis.Mironov.SE.repositories.MyUsersRepository;
 
@@ -17,14 +16,7 @@ public class MyUserService {
     @Autowired
     AdviceService adviceService;
     @Autowired
-    MyUsersRepository myUsersRepository;
-    public MyUsersRepository getMyUsersRepository() {
-        return myUsersRepository;
-    }
-
-    public void setMyUsersRepository(MyUsersRepository myUsersRepository) {
-        this.myUsersRepository = myUsersRepository;
-    }
+    public MyUsersRepository myUsersRepository;
 
     @Transactional
     public MyUser addEntity(MyUser user) {
@@ -40,30 +32,74 @@ public class MyUserService {
         return myUsersRepository.findByEmail(email);
     }
 
-    @Transactional
-    public MyUser editEntity(MyUser user) {
-        long id = this.getByEmail(user.getEmail()).getId();
-        this.delete(id);
-        this.addEntity(user);
-        return user;
-    }
-
     public List<MyUser> getAll() {
         return myUsersRepository.findAll();
     }
 
-    public MyUser getByLogin(String login) {
-        return myUsersRepository.findByLogin(login);
+    public List<MyUser> getAll(String sort) {
+        List<MyUser> users = null;
+        switch (sort){
+            case "login": users = myUsersRepository.findAllByOrderByLoginAsc();
+                break;
+            case "email": users = myUsersRepository.findAllByOrderByEmailAsc();
+                break;
+            case "firm": users = myUsersRepository.findAllByOrderByFirmAsc();
+                break;
+            case "tarif": users = myUsersRepository.findAllByOrderByTarifAsc();
+                break;
+            case "last": users = myUsersRepository.findAllByOrderByLastAsc();
+                break;
+            case "status": users = myUsersRepository.findAllByOrderByNonlockedAsc();
+                break;
+            case "role": users = myUsersRepository.findAllByOrderByRoleAsc();
+                break;
+        }
+        return users;
     }
 
     @Transactional
     public MyUser changePassword(MyUser user){
-        myUsersRepository.changePasswordById(user.getPassword(), user.getId());
-        return user;
+        return addEntity(user);
     }
     @Transactional
-    public MyUser paySchet(MyUser user){
-        myUsersRepository.changeLastById(user.getLast(), user.getId());
-        return user;
+    public void changeTarif(MyUser user){
+        addEntity(user);
+    }
+
+    public List<MyUser> getNewUsers() {
+        return myUsersRepository.findByEnabledIsFalse();
+    }
+
+    @Transactional
+    public void activateUserById(Long uid, Boolean status) {
+        myUsersRepository.updateEnabledById(uid, status);
+    }
+
+    @Transactional
+    public void nonLockedUserById(Long uid, Boolean status) {
+        myUsersRepository.updateNonLockedById(uid, status);
+    }
+
+    public MyUser getById(Long uid) {
+        return myUsersRepository.findById(uid);
+    }
+
+    public List<MyUser> getNewUsers(String sort) {
+        List<MyUser> users = null;
+        switch (sort){
+            case "login": users = myUsersRepository.findAllByEnabledIsFalseOrderByLoginAsc();
+                break;
+            case "email": users = myUsersRepository.findAllByEnabledIsFalseOrderByEmailAsc();
+                break;
+            case "firm": users = myUsersRepository.findAllByEnabledIsFalseOrderByFirmAsc();
+                break;
+            case "tarif": users = myUsersRepository.findAllByEnabledIsFalseOrderByTarifAsc();
+                break;
+            case "last": users = myUsersRepository.findAllByEnabledIsFalseOrderByLastAsc();
+                break;
+            case "role": users = myUsersRepository.findAllByEnabledIsFalseOrderByRoleAsc();
+                break;
+        }
+        return users;
     }
 }

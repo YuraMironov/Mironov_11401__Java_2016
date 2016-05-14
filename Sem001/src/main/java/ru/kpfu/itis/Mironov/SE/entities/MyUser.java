@@ -17,19 +17,31 @@ import java.util.List;
 public class MyUser implements UserDetails {
 
     private Long id;
-    private String login;
-    private String password;
-    private String email;
-    private Long userProduce;
-    private Integer last;
-    private Long userTarif;
+    private Firm firm;
     private String role;
     private Tarif tarif;
-
-
+    private Integer last;
+    private String login;
+    private String email;
+    private String password;
     private boolean enabled;
+    private boolean nonlocked;
 
-    private Firm firm;
+    @Transient
+    public SafetyUser getSafetyUser(){
+        SafetyUser safetyUser =  new SafetyUser();
+        safetyUser.setUsername(getUsername());
+        safetyUser.setLogin(getLogin());
+        safetyUser.setId(getId());
+        safetyUser.setLast(getLast());
+        safetyUser.setTarif(getTarif());
+        safetyUser.setFirm(getFirm());
+        safetyUser.setEmail(getEmail());
+        safetyUser.setRole(getRole());
+        safetyUser.setAdmin(isAdmin());
+        return safetyUser;
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +49,11 @@ public class MyUser implements UserDetails {
         return id;
     }
 
-
-
     public void setId(Long id) {
         this.id = id;
     }
+
+
 
     @Basic
     @Column(name = "login")
@@ -56,7 +68,9 @@ public class MyUser implements UserDetails {
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(this.getRole().toUpperCase()));
+        for(String s: getRole().split(",")){
+            grantedAuthorities.add(new SimpleGrantedAuthority(s.trim().toUpperCase()));
+        }
         return grantedAuthorities;
     }
 
@@ -75,9 +89,17 @@ public class MyUser implements UserDetails {
     public boolean isAccountNonExpired() {
         return true;
     }
+
+    @Column(name = "nonlocked")
+    public boolean isNonlocked() {
+        return nonlocked;
+    }
+    public void setNonlocked(boolean nonlocked) {
+        this.nonlocked = nonlocked;
+    }
     @Transient
     public boolean isAccountNonLocked() {
-        return true;
+        return isNonlocked();
     }
 
     @Transient
@@ -87,7 +109,6 @@ public class MyUser implements UserDetails {
 
     @Column(name = "enabled")
     public boolean isEnabled() {
-        System.out.println(enabled + "user");
         return enabled;
     }
 
@@ -109,15 +130,6 @@ public class MyUser implements UserDetails {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "user_Produce")
-    public Long getUserProduce() {
-        return userProduce;
-    }
-
-    public void setUserProduce(Long userProduce) {
-        this.userProduce = userProduce;
-    }
 
     @Basic
     @Column(name = "last")
@@ -127,16 +139,6 @@ public class MyUser implements UserDetails {
 
     public void setLast(Integer last) {
         this.last = last;
-    }
-
-    @Basic
-    @Column(name = "user_tarif")
-    public Long getUserTarif() {
-        return userTarif;
-    }
-
-    public void setUserTarif(Long userTarif) {
-        this.userTarif = userTarif;
     }
 
     @Basic
@@ -150,58 +152,28 @@ public class MyUser implements UserDetails {
     }
 
 
-
-//    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_tarif")
-//    public Tarif getTarif() {
-//        return tarif;
-//    }
-//
-//    public void setTarif(Tarif tarif) {
-//        this.tarif = tarif;
-//    }
-//
-//    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_firm")
-//    public Firm getFirm() {
-//        return firm;
-//    }
-//
-//    public void setFirm(Firm firm) {
-//        this.firm = firm;
-//    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        MyUser myUsers = (MyUser) o;
-
-        if (id != null ? !id.equals(myUsers.id) : myUsers.id != null) return false;
-        if (login != null ? !login.equals(myUsers.login) : myUsers.login != null) return false;
-        if (password != null ? !password.equals(myUsers.password) : myUsers.password != null) return false;
-        if (email != null ? !email.equals(myUsers.email) : myUsers.email != null) return false;
-        if (userProduce != null ? !userProduce.equals(myUsers.userProduce) : myUsers.userProduce != null)
-            return false;
-        if (last != null ? !last.equals(myUsers.last) : myUsers.last != null) return false;
-        if (userTarif != null ? !userTarif.equals(myUsers.userTarif) : myUsers.userTarif != null) return false;
-        if (role != null ? !role.equals(myUsers.role) : myUsers.role != null) return false;
-
-        return true;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_tarif")
+    public Tarif getTarif() {
+        return tarif;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (userProduce != null ? userProduce.hashCode() : 0);
-        result = 31 * result + (last != null ? last.hashCode() : 0);
-        result = 31 * result + (userTarif != null ? userTarif.hashCode() : 0);
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        return result;
+    public void setTarif(Tarif tarif) {
+        this.tarif = tarif;
+    }
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_produce")
+    public Firm getFirm() {
+        return firm;
+    }
+
+    public void setFirm(Firm firm) {
+        this.firm = firm;
+    }
+    @Transient
+    public boolean isAdmin(){
+        return getRole().toUpperCase().contains("ADMIN");
     }
 
     @Override
@@ -209,11 +181,46 @@ public class MyUser implements UserDetails {
         return "MyUser{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", userProduce=" + userProduce +
                 ", last=" + last +
-                ", userTarif=" + userTarif +
                 ", role='" + role + '\'' +
+                ", tarif=" + tarif +
+                ", enabled=" + enabled +
+                ", firm=" + firm +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MyUser user = (MyUser) o;
+
+        if (enabled != user.enabled) return false;
+        if (!id.equals(user.id)) return false;
+        if (!login.equals(user.login)) return false;
+        if (!password.equals(user.password)) return false;
+        if (!email.equals(user.email)) return false;
+        if (!last.equals(user.last)) return false;
+        if (!role.equals(user.role)) return false;
+        if (!tarif.equals(user.tarif)) return false;
+        return firm.equals(user.firm);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + login.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + last.hashCode();
+        result = 31 * result + role.hashCode();
+        result = 31 * result + tarif.hashCode();
+        result = 31 * result + (enabled ? 1 : 0);
+        result = 31 * result + firm.hashCode();
+        return result;
     }
 }

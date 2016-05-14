@@ -17,10 +17,10 @@
                 <p>Электронный адрес: ${user.getEmail()}
                 </p>
 
-                <p>Поставщик: ${user.getUserProduce()}
+                <p>Поставщик: ${user.getFirm().getNameF()}
                 </p>
 
-                <p>Тариф: ${user.getUserTarif()}
+                <p>Тариф: ${user.getTarif().getNameT()}
                 </p>
 
                 <p>Последнее показание счетчика: ${user.getLast()}

@@ -8,6 +8,7 @@
     <mvc:resources mapping="/**" location="WEB-INF/" />
     <context:component-scan base-package="ru.kpfu.itis.Mironov.SE.controllers"/>
     <context:component-scan base-package="ru.kpfu.itis.Mironov.SE.forms.constarint.validator.impl"/>
+    <context:component-scan base-package="ru.kpfu.itis.Mironov.SE.components"/>
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"
           p:templateLoaderPath="/WEB-INF/templates"
         p:defaultEncoding="UTF-8"/>

@@ -14,4 +14,6 @@ public interface AdviceRepository extends JpaRepository<Advice, Long> {
     Advice findByAdvname(String advname);
 
     List<Advice> findByAuthorId(long id);
+
+    Advice findById(long id);
 }

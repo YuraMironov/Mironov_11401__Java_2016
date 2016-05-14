@@ -8,7 +8,6 @@
 <#include "TopBlock.ftl">
 
 <#include "DotDotDot.ftl">
-<#assign advices=model["advices"]>
 <div class="content">
     <div class="headadvice">
         <center><a href="#" data-toggle="modal" data-target="#myModal"
@@ -23,7 +22,7 @@
                     </div>
                     <table class="table">
                         <tbody>
-                        <#list model["allAdvices"] as advice>
+                        <#list allAdvices as advice>
                         <tr>
                             <td></td>
                             <td>
@@ -46,7 +45,6 @@
             </div>
         </div>
     </div>
-<#assign styles = model["styles"]>
 <#assign id=1 >
 <#list advices as advice>
     <#assign st=styles[id-1]>
@@ -72,7 +70,7 @@
     <#assign id++>
 </#list>
 <#assign id=0>
-<#list model["allAdvices"] as advice>
+<#list allAdvices as advice>
     <#assign id++>
     <div class="modal fade mymodal" id="myModal${id}" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
@@ -105,14 +103,14 @@
 </#list>
 
 
-    <div class="modal fade<#if model["validInfo"]??> in</#if>" id="myModalAddAdv" tabindex="-1"
+    <div class="modal fade<#if validInfo??> in</#if>" id="myModalAddAdv" tabindex="-1"
                             role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true"<#if model["validInfo"]??> style="display: block;"</#if>>
+         aria-hidden="true"<#if validInfo??> style="display: block;"</#if>>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
 
-                <#if !model["validInfo"]??> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></#if>
+                <#if !validInfo??> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></#if>
                     <h4 class="modal-title">Добавить совет</h4>
                 </div>
                 <div class="panel-body">
@@ -136,17 +134,17 @@
 
                 </div>
                 <div class="modal-footer">
-                    <#if model["validInfo"]??><a href="/advices"></#if>
+                    <#if validInfo??><a href="/advices"></#if>
                     <button type="button" class="btn btn-default" data-dismiss="modal">
-                        <#if model["validInfo"]??>Вернуться к советам!<#else>Закрыть</#if>
+                        <#if validInfo??>Вернуться к советам!<#else>Закрыть</#if>
                     </button>
-                    <#if model["validInfo"]??></a> </#if>
+                    <#if validInfo??></a> </#if>
                 </div>
             </div>
         </div>
     </div>
 
 <#include "DownBlockUserBlock.ftl">
-    <#if model["validInfo"]??><div class="modal-backdrop fade in"></div></#if>
+    <#if validInfo??><div class="modal-backdrop fade in"></div></#if>
 </body>
 </html>

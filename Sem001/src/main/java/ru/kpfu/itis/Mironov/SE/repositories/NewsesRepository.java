@@ -10,4 +10,6 @@ import ru.kpfu.itis.Mironov.SE.entities.News;
 @Repository
 public interface NewsesRepository extends JpaRepository<News, Long> {
     News findByTitle(String title);
+
+    News findByIdNews(Long id);
 }

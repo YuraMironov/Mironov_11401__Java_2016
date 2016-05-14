@@ -6,20 +6,20 @@
 <#if model["currentUser"]??>
 <#include "TopBlock.ftl">
 <div class="content">
-    <div class="SchetBlock" style="height: auto;">
-        <#if er_mes?? && er_mes="changePassReg">
-        <center>
-            <div class="bs-example">
-                <div class="alert alert-success fade in">
-                    <h4>Пароль успешно сменен!!</h4>
+    <#if er_mes?? && er_mes="changePassReg">
+    <center>
+        <div class="bs-example">
+            <div class="alert alert-success fade in">
+                <h4>Пароль успешно сменен!!</h4>
 
-                    <p><a href="/home">
-                        <button type="button" class="btn btn-danger">На главную!!</button>
-                    </a></p>
-                </div>
+                <p><a href="/home">
+                    <button type="button" class="btn btn-danger">На главную!!</button>
+                </a></p>
             </div>
-        <center>
-        </#if>
+        </div>
+    <center>
+    </#if>
+    <div class="SchetBlock" style="height: auto;">
 
         <@form.form commandName="changepassword_form" action="/changepass" method="post" style="width: 80%; margin-left: 10%;"
         onsubmit="return eqvPass() && checkedPass();">

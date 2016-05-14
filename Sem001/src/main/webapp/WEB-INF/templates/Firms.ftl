@@ -5,12 +5,8 @@
     <title>Фирмы</title>
 </head>
 <body>
-<#if model["count"]??>
-    <#assign count=model["count"] k=model["firmsSize"] firms=model["firms"]>
+    <#assign k=firmsSize>
     <#include "MaxPageAndMaxIdForPagination.ftl">
-<#--if (count > maxPage) {-->
-<#--response.sendRedirect("/error404?backPage=" + request.getRequestURI().substring(1));-->
-<#--} else {%>-->
     <#include "TopBlock.ftl">
 <div class="content">
     <div class="panel panel-default">
@@ -45,8 +41,6 @@
         <#include "Pagination.ftl">
     </div>
 </div>
-<#else>
-</#if>
 <#include "DownBlockUserBlock.ftl">
 </body>
 </html>

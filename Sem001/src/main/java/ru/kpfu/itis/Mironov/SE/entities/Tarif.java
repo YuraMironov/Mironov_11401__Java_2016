@@ -17,6 +17,7 @@ public class Tarif {
 
     @Id
     @Column(name = "id_tarif")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getIdTarif() {
         return idTarif;
     }

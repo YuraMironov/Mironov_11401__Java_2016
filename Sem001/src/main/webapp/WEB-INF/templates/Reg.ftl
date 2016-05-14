@@ -46,7 +46,6 @@
         <span class="label label-default">Укажите своего поставщика</span>
 
         <select class="form-control" id="optionDefault" name="produce" required>
-            <#if model["firms"]??> <#assign firms = model["firms"]></#if>
             <#list  firms as firm>
                 <option value="${firm.getIdFirm()}">${firm.getNameF()}</option>
             </#list>
@@ -54,7 +53,6 @@
 
         <span class="label label-default">Тариф</span>
         <select class="form-control" name="tarif" required>
-            <#if model["tarifs"]??> <#assign tarifs = model["tarifs"]></#if>
             <#list tarifs as tarif>
                 <option value="${tarif.getIdTarif()}">${tarif.getNameT()}</option>
             </#list>

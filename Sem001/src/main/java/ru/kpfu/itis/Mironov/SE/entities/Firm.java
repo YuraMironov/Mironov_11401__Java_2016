@@ -17,6 +17,7 @@ public class Firm {
 
     @Id
     @Column(name = "id_firm")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getIdFirm() {
         return idFirm;
     }

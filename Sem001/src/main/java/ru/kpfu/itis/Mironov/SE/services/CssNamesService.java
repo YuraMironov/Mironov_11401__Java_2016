@@ -16,25 +16,16 @@ import java.util.List;
 @Service
 public class CssNamesService{
     @Autowired
-    CssNamesRepository cssNamesRepository;
+    public CssNamesRepository cssNamesRepository;
 
     @Transactional
     public CssNames addEntity(CssNames cssNames) {
-        return null;
+        return cssNamesRepository.saveAndFlush(cssNames);
     }
 
     @Transactional
     public void delete(long id) {
-
-    }
-
-    public CssNames getByName(String name) {
-        return null;
-    }
-
-    @Transactional
-    public CssNames editEntity(CssNames cssNames) {
-        return null;
+        cssNamesRepository.delete(id);
     }
 
     public List<CssNames> getAll() {
