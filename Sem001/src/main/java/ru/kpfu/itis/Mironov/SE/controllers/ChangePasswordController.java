@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.kpfu.itis.Mironov.SE.entities.MyUser;
 import ru.kpfu.itis.Mironov.SE.forms.ChangePassForm;
+import ru.kpfu.itis.Mironov.SE.forms.RegistrationForm;
 import ru.kpfu.itis.Mironov.SE.services.MyUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,13 +25,11 @@ public class ChangePasswordController {
     MyUserService userService;
     @Autowired
     HttpServletRequest request;
-    @Autowired
-    private ModelAndView modelChP;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView chengePasswdDoPost(HttpServletRequest request) {
+    public String chengePasswdDoPost(HttpServletRequest request) {
         request.setAttribute(ATTR_CHANGEPASSWORD_FORM, new ChangePassForm());
-        return modelChP;
+        return "ChangePassword";
     }
 
     @Transactional
@@ -40,20 +37,20 @@ public class ChangePasswordController {
     public ModelAndView changePasswdDoPost(@Valid @ModelAttribute(ATTR_CHANGEPASSWORD_FORM) ChangePassForm cpf,
                                            BindingResult bindingResult) {
         MyUser user = userService.getByEmail(request.getRemoteUser());
+        ModelAndView mav = new ModelAndView("ChangePassword");
         if (bindingResult.hasErrors()) {
-            return modelChP;
+            return mav;
         }
         if (cpf.getOldPass() != null)
             if (!MD5.md5Decoder(cpf.getOldPass()).equals(user.getPassword())) {
-                modelChP.getModelMap().addAttribute("er_mes", "oldPass");
-                modelChP.getModelMap().clear();
-                return modelChP;
+                mav.getModelMap().put("er_mes", "oldPass");
+                return mav;
             } else {
                 user.setPassword(MD5.md5Decoder(cpf.getPassword2()));
                 userService.changePassword(user);
-                modelChP.getModelMap().put("er_mes", "changePassReg");
-                return modelChP;
+                mav.getModelMap().put("er_mes", "changePassReg");
+                return mav;
             }
-        return new ModelAndView("redirect:/error404");
+        return new ModelAndView("error404");
     }
 }

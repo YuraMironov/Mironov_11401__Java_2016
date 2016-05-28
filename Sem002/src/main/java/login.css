@@ -1,0 +1,36 @@
+.login{
+	-fx-background-image: url("./login.jpg");
+	-fx-background-position: 35% 45%;
+	-fx-background-attachment: fixed;
+}
+.mybackgr{
+	-fx-background-image: url("./login.jpg") 0 0 .125;
+	-fx-background-position: 35% 45%;
+	-fx-background-attachment: fixed;
+	-fx-opacity: 0.4;
+
+}
+.login_form{
+	-fx-border-radius : 50px;
+	-fx-background-color: #ccc1f1;
+}
+.nav{
+	-fx-background-color: #333;
+}
+.button{
+	-fx-border-radius: 1px;
+	-fx-background-color: #333;
+}
+.button:hover{
+	-fx-background-color: black;
+}
+.button:target{
+	-fx-background-color: black;
+}
+.menu{
+	-fx-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+.content{
+	-fx-background-color: rgba(255,255,255,0.7);
+	-fx-padding: 20px 20px 20px 25px;
+}

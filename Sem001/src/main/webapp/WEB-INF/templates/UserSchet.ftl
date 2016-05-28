@@ -8,7 +8,8 @@
     function autoinput() {
         $("#schetNumber").val("<#if schetNumber??>${schetNumber}</#if>");
         $("#date").val("<#if date??>${date}</#if>");
-        $("#schetchik").val("<#if schetchik??>${lastNow}</#if>");
+        $("#userName").val("<#if schetName??>${schetName}</#if>");
+        $("#schetchik").val("<#if schetchik??>${schetchik}</#if>");
     }
     function init() {
         autoinput();
@@ -33,12 +34,9 @@
                     <p><a href="/home">
                         <button type="button" class="btn btn-danger">На главную!!</button>
                     </a>
-                    <form action="/userschet/pay" method="post">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="dolg" value="${dolg}"/>
-                        <input type="hidden" name="lastNow" value="${lastNow}"/>
-                        <button type="submit" class="btn btn-danger">Оплатить</button>
-                    </form>
+                        <a href="/userschet/pay?dolg=${dolg}&lastNow=${lastNow}">
+                            <button type="button" class="btn btn-danger">Оплатить</button>
+                        </a>
                     </p>
                 </div>
             </div>
@@ -49,7 +47,7 @@
     <div class="er_mes">
         <div class="bs-example">
             <div class="alert alert-danger fade in">
-                <#if model["currentUser"].getLast() = 99999>
+                <#if activeUser.schetchik = 99999>
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 </#if>
                 <h4>Внимание!</h4>
@@ -64,13 +62,10 @@
                 <p><a href="/home">
                     <button type="button" class="btn btn-danger">На главную!!</button>
                 </a>
-                    <#if model["currentUser"].getLast() = 99999>
-                        <form action="/userschet/pay" method="post">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input type="hidden" name="dolg" value="${dolg}"/>
-                            <input type="hidden" name="lastNow" value="${lastNow}"/>
-                            <button type="submit" class="btn btn-danger">Оплатить</button>
-                        </form>
+                    <#if model["currentUser"].schetchik = 99999>
+                        <a href="/pay?dolg=${dolg}&lastNow=${lastNow}">
+                            <button type="button" class="btn btn-danger">Оплатить</button>
+                        </a>
                     </#if>
                 </p>
             </div>

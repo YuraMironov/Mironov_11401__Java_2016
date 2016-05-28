@@ -4,6 +4,7 @@ import ru.kpfu.itis.Mironov.SE.forms.constarint.validator.impl.PasswordConstrain
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.constraints.Pattern;
 import java.lang.annotation.*;
 
 /**

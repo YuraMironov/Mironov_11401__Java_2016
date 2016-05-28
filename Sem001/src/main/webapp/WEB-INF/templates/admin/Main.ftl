@@ -16,7 +16,6 @@
     <div>
         <p><a href="/admin/activateuser">Новые пользователи</a></p>
         <p><a href="/admin/allusers">Все пользователи</a></p>
-        <#if uri?? && uri = "allusers"><p><div style="text-align: right;padding-right : 30px;"> <a href="/admin/allusers/document">Скачать файлом</a></div></p></#if>
         <p><a href="/admin/claimstarif">Заявки на смену тарифа</a></p>
         <p><a href="#" onclick="openEditDiv()">Режим редактирования</a></p>
 

@@ -2,10 +2,10 @@ package ru.kpfu.itis.Mironov.SE.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import ru.kpfu.itis.Mironov.SE.entities.Firm;
-import ru.kpfu.itis.Mironov.SE.services.FirmService;
+import ru.kpfu.itis.Mironov.SE.services.FirmsService;
 
 import java.util.List;
 
@@ -16,19 +16,17 @@ import java.util.List;
 @RequestMapping("/{path:firms}")
 public class FirmsPageController {
     @Autowired
-    FirmService firmService;
-    @Autowired
-    ModelAndView modelFirms;
+    FirmsService firmsService;
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView firmsDoGet( @RequestParam(value = "count", required = false) Integer count,
-                                    @PathVariable("path") String path){
+    public String firmsDoGet(@ModelAttribute("model") ModelMap model, @RequestParam(value = "count", required = false) Integer count,
+                             @PathVariable("path") String path){
         if (count == null || count < 1){
-            return new ModelAndView("redirect:/" + path + "?count=1");
+            return "redirect:/" + path + "?count=1";
         }
-        List<Firm> firms = firmService.get10NewsByPageNumber(count);
-        modelFirms.getModelMap().addAttribute("firms", firms);
-        modelFirms.getModelMap().addAttribute("firmsSize", firmService.getAll().size());
-        modelFirms.getModelMap().addAttribute("count", count);
-        return modelFirms;
+        List<Firm> firms = firmsService.get10NewsByPageNumber(count);
+        model.addAttribute("firms", firms);
+        model.addAttribute("firmsSize", firmsService.getAll().size());
+        model.addAttribute("count", count);
+        return "Firms";
     }
 }

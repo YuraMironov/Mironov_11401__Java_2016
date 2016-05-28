@@ -16,7 +16,14 @@ public class MyUserService {
     @Autowired
     AdviceService adviceService;
     @Autowired
-    public MyUsersRepository myUsersRepository;
+    MyUsersRepository myUsersRepository;
+    public MyUsersRepository getMyUsersRepository() {
+        return myUsersRepository;
+    }
+
+    public void setMyUsersRepository(MyUsersRepository myUsersRepository) {
+        this.myUsersRepository = myUsersRepository;
+    }
 
     @Transactional
     public MyUser addEntity(MyUser user) {
@@ -30,6 +37,14 @@ public class MyUserService {
 
     public MyUser getByEmail(String email) {
         return myUsersRepository.findByEmail(email);
+    }
+
+    @Transactional
+    public MyUser editEntity(MyUser user) {
+        long id = this.getByEmail(user.getEmail()).getId();
+        this.delete(id);
+        this.addEntity(user);
+        return user;
     }
 
     public List<MyUser> getAll() {
@@ -51,19 +66,27 @@ public class MyUserService {
                 break;
             case "status": users = myUsersRepository.findAllByOrderByNonlockedAsc();
                 break;
-            case "role": users = myUsersRepository.findAllByOrderByRoleAsc();
-                break;
         }
         return users;
     }
 
+    public MyUser getByLogin(String login) {
+        return myUsersRepository.findByLogin(login);
+    }
     @Transactional
     public MyUser changePassword(MyUser user){
-        return addEntity(user);
+        myUsersRepository.changePasswordById(user.getPassword(), user.getId());
+        return user;
+    }
+
+    @Transactional
+    public MyUser paySchet(MyUser user){
+        myUsersRepository.changeLastById(user.getLast(), user.getId());
+        return user;
     }
     @Transactional
     public void changeTarif(MyUser user){
-        addEntity(user);
+        myUsersRepository.changeTarifById(user.getTarif(), user.getId());
     }
 
     public List<MyUser> getNewUsers() {
@@ -96,8 +119,6 @@ public class MyUserService {
             case "tarif": users = myUsersRepository.findAllByEnabledIsFalseOrderByTarifAsc();
                 break;
             case "last": users = myUsersRepository.findAllByEnabledIsFalseOrderByLastAsc();
-                break;
-            case "role": users = myUsersRepository.findAllByEnabledIsFalseOrderByRoleAsc();
                 break;
         }
         return users;

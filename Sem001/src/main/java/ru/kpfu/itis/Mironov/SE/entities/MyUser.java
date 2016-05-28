@@ -17,30 +17,15 @@ import java.util.List;
 public class MyUser implements UserDetails {
 
     private Long id;
-    private Firm firm;
+    private String login;
+    private String password;
+    private String email;
+    private Integer last;
     private String role;
     private Tarif tarif;
-    private Integer last;
-    private String login;
-    private String email;
-    private String password;
+    private Firm firm;
     private boolean enabled;
     private boolean nonlocked;
-
-    @Transient
-    public SafetyUser getSafetyUser(){
-        SafetyUser safetyUser =  new SafetyUser();
-        safetyUser.setUsername(getUsername());
-        safetyUser.setLogin(getLogin());
-        safetyUser.setId(getId());
-        safetyUser.setLast(getLast());
-        safetyUser.setTarif(getTarif());
-        safetyUser.setFirm(getFirm());
-        safetyUser.setEmail(getEmail());
-        safetyUser.setRole(getRole());
-        safetyUser.setAdmin(isAdmin());
-        return safetyUser;
-    }
 
     @Id
     @Column(name = "id")
@@ -68,9 +53,7 @@ public class MyUser implements UserDetails {
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        for(String s: getRole().split(",")){
-            grantedAuthorities.add(new SimpleGrantedAuthority(s.trim().toUpperCase()));
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority(this.getRole().toUpperCase()));
         return grantedAuthorities;
     }
 
@@ -170,10 +153,6 @@ public class MyUser implements UserDetails {
 
     public void setFirm(Firm firm) {
         this.firm = firm;
-    }
-    @Transient
-    public boolean isAdmin(){
-        return getRole().toUpperCase().contains("ADMIN");
     }
 
     @Override

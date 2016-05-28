@@ -1,9 +1,11 @@
-package ru.kpfu.itis.Mironov.SE.entities;
+package sem02.components;
+
+import java.io.Serializable;
 
 /**
  * Created by Юра on 13.05.2016.
  */
-public class SafetyUser  {
+public class SafetyUser implements Serializable{
     private String username;
     private String role;
     private String login;

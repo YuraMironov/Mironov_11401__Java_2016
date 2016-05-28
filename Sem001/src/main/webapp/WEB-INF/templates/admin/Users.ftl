@@ -9,10 +9,6 @@
         <th><label>Тариф <input type="radio" name="sort" onclick="sort('tarif')"/></label></th>
         <th><label>Показания счетчика <input type="radio" name="sort" onclick="sort('last')"/></label></th>
         <th><label>Состояние <input type="radio" name="sort" onclick="sort('status')"/></label></th>
-        <#if uri = "allusers">
-            <th><label>Роль <input type="radio" name="sort" onclick="sort('role')"/></label></th>
-            <th></th>
-        </#if>
     <#else >
         <th>Новых пользователей нет</th>
     </#if>
@@ -31,17 +27,11 @@
             <#if uri = "allusers">
                 <input type="checkbox" id="status${user.getId()}" name="status"
                        onclick="changeStatus(${user.getId()})" <#if user.isAccountNonLocked()> checked</#if>/>
-                <form action="/admin/allusers/change_role" method="post">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input type="hidden" name="uid" value="${user.getId()}"/>
-                <td><input type="text" name="role" value="${user.getRole()}"/> </td>
-                <td><input  type="submit" value='Изменить роль'/></td>
-                </form>
             <#else >
-                <form id='cr' action="/admin/activateuser" method="post">
+                <form action="/admin/activateuser" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="uid" value="${user.getId()}"/>
-                    <input type="submit" value='Подтвердить'/>
+                    <button type="submit">Подтвердить</button>
                 </form>
             </#if>
         </td>
@@ -81,28 +71,20 @@
                     $("#tbody").html("");
                     for (var i = 0; i < response_data.length; i++) {
                         var string = "";
-                        var changerole = "";
-
                         if (uri == "allusers") {
                             var string1 = response_data[i].nonlocked ? "' checked/>" : "'/>"
                             string = "<input type='checkbox' id='status" + response_data[i].id + "' name='status' onclick='changeStatus(" + response_data[i].id + ")";
                             string += string1;
-                            changerole += "<form id='cr" + response_data[i].id + "' action='/admin/allusers/change_role' method='post'>" +
-                                    "<input form='cr" + response_data[i].id + "' type='hidden' name='" + csrfn + "' value='" + csrfv + "'/>"
-                                    + "<input form='cr" + response_data[i].id + "'  type='hidden' name='uid' value='" + response_data[i].id + "'/>"
-                                    + "<td><input form='cr" + response_data[i].id + "' type='text' name='role' value='" + response_data[i].role + "'/> </td>"
-                                    + "<td><input form='cr" + response_data[i].id + "' type='submit' value='Изменить роль'/></td></form>";
                         } else {
                             string = "<form action='/admin/activateuser' method='post'>"
                                     + "<input type='hidden' name='" + csrfn + "' value='" + csrfv + "'/>"
                                     + "<input type='hidden' name='uid' value='" + response_data[i].id + "'/>"
                                     + "<button type='submit'>Подтвердить</button></form>";
                         }
-                        var innnertable = "<tr><td>" + response_data[i].login + "</td><td>" +
+                        $("#tbody").append("<tr><td>" + response_data[i].login + "</td><td>" +
                                 response_data[i].email + "</td><td>" + response_data[i].firm.nameF +
                                 "</td><td>" + response_data[i].tarif.nameT + "</td><td>" + response_data[i].last
-                                + "</td><td style='text-align: center;'>" + string + "</td>" + changerole + "</tr>";
-                        $("#tbody").append(innnertable);
+                                + "</td><td style='text-align: center;'>" + string + "</td></tr>");
                     }
                 } else {
                     $("#tbody").append("<tr><td>Новых пользователей нет</td></tr>");

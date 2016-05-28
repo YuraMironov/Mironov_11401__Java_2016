@@ -44,9 +44,15 @@
 <div class="content">
     <div class="SchetBlock">
         <h3>Извините, но такой страницы не существует. <span class="label label-default">4,0,4</span></h3>
-            <a href="/">
-                <div class="res" style="text-align:  right;">На главную</div>
-            </a>
+        <%
+        String uri = request.getParameter("backPage");
+        if (uri != null) {
+        %>
+        <a href="/<%=uri%>">
+            <div class="res" style="text-align:  right;">Вернуться назад</div>
+        </a>
+
+        <%}%>
     </div>
 </div>
 <#include "DownBlockUserBlock.ftl">

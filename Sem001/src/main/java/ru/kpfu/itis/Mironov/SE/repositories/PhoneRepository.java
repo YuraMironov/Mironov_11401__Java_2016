@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.kpfu.itis.Mironov.SE.entities.Phone;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 /**
  * Created by Юра on 10.05.2016.
  */

@@ -1,6 +1,6 @@
 <table style="margin-left: 50px" xmlns="http://www.w3.org/1999/html">
     <thead>
-    <#if claims??>
+    <#if !claims??>
     <th>ID пользователя</th>
     <th>ID нового тарифа</th>
     <th>Причина</th>
@@ -12,7 +12,7 @@
     <tbody>
     <#list claims as claim>
     <tr>
-        <td><a href="/admin/user/uid?uid=${claim.getUserid()}">${claim.getUserid()}</a> </td>
+        <td>${claim.getUserid()}</td>
         <td>${claim.getNewtarifid()}</td>
         <td>${claim.getComment()}</td>
         <td>

@@ -4,6 +4,7 @@ import ru.kpfu.itis.Mironov.SE.forms.constarint.validator.LastLength;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.constraints.Pattern;
 
 /**
  * Created by Юра on 06.05.2016.

@@ -1,12 +1,11 @@
 package ru.kpfu.itis.Mironov.SE.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kpfu.itis.Mironov.SE.entities.MyUser;
+
 
 
 /**
@@ -15,7 +14,7 @@ import ru.kpfu.itis.Mironov.SE.entities.MyUser;
 @Component
 public class MyUserDetailService implements UserDetailsService {
     @Autowired
-    public MyUserService myUserService;
+    MyUserService myUserService;
 
     @Transactional
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {

@@ -5,8 +5,11 @@
     <title>Тарифы</title>
 </head>
 <body>
-<#assign k=tarifsSize>
+<#assign count=model["count"] tarifs=model["tarifs"] k=model["tarifsSize"]>
 <#include "MaxPageAndMaxIdForPagination.ftl">
+<#--if (count > maxPage){-->
+<#--response.sendRedirect("/error404?backPage=" + request.getRequestURI().substring(1, request.getRequestURI().length()));-->
+<#--}else{%>-->
 <#include "TopBlock.ftl">
 <div class="content">
     <div class="panel panel-default">

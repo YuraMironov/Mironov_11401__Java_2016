@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class TarifsService {
     @Autowired
-    public TarifsRepository tarifsRepository;
+    TarifsRepository tarifsRepository;
     @Transactional
     public Tarif addEntity(Tarif tarif) {
         return tarifsRepository.saveAndFlush(tarif);
@@ -25,6 +25,16 @@ public class TarifsService {
         tarifsRepository.delete(id);
     }
 
+    public Tarif getByName(String name) {
+        return tarifsRepository.findByNameT(name);
+    }
+
+    @Transactional
+    public Tarif editEntity(Tarif tarif) {
+        delete(this.getByName(tarif.getNameT()).getIdTarif());
+        return addEntity(tarif);
+
+    }
 
     public List<Tarif> getAll() {
         return tarifsRepository.findAll();
@@ -42,6 +52,6 @@ public class TarifsService {
     }
 
     public void checkedChanges(Tarif tarif) {
-        addEntity(tarif);
+        tarifsRepository.saveAndFlush(tarif);
     }
 }

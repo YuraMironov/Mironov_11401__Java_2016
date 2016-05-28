@@ -1,6 +1,7 @@
 package ru.kpfu.itis.Mironov.SE.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kpfu.itis.Mironov.SE.entities.Phone;
 import ru.kpfu.itis.Mironov.SE.repositories.PhoneRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 @org.springframework.stereotype.Service
 public class PhoneService {
     @Autowired
-    public PhoneRepository phoneRepository;
+    PhoneRepository phoneRepository;
     @Transactional
     public Phone addEntity(Phone phone) {
         return phoneRepository.saveAndFlush(phone);
@@ -26,9 +27,18 @@ public class PhoneService {
     public Phone getById(Long id) {
         return phoneRepository.findById(id);
     }
+    @Transactional
+    public Phone editEntity(Phone phone) {
+        phoneRepository.saveAndFlush(phone);
+        return phone;
+    }
 
     public List<Phone> getAll() {
         return phoneRepository.findAll();
     }
 
+    public Phone getByNumbers(String phone) {
+
+        return phoneRepository.findByNumbers(phone);
+    }
 }

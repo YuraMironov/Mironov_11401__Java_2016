@@ -5,7 +5,7 @@
     <title>Новости</title>
 </head>
 <body>
-<#assign k=newsesSize>
+<#assign count=model["count"] newses=model["newses"] k=model["newsesSize"]>
 <#include "MaxPageAndMaxIdForPagination.ftl">
 <#--if (count > maxPage){-->
 <#--response.sendRedirect("/error404?backPage=" + request.getRequestURI().substring(1));-->

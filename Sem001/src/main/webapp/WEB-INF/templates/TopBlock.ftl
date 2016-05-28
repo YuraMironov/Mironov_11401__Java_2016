@@ -95,9 +95,6 @@
                             <li><a tabindex="-1" href="/changepass">Сменить пароль</a></li>
                             <li><a tabindex="-1" href="/changetarif">Сменить тариф</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#myModalProfile">Мой профиль</a>
-                                <#if model["currentUser"]?? && model["currentUser"].isAdmin()>
-                                    <li><a tabindex="-1" href="/admin/activateuser">Админка</a></li>
-                                </#if>
                             </li>
                             <#if model["path"] == "/advices">
                                 <li><a href="#" data-toggle="modal" data-target="#myModalAddAdv">Добавить совет</a>

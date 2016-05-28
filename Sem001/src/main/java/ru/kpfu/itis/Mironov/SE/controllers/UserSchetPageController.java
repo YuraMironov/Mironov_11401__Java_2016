@@ -2,17 +2,12 @@ package ru.kpfu.itis.Mironov.SE.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.kpfu.itis.Mironov.SE.entities.MyUser;
-import ru.kpfu.itis.Mironov.SE.entities.SafetyUser;
 import ru.kpfu.itis.Mironov.SE.entities.Tarif;
+import ru.kpfu.itis.Mironov.SE.forms.RegistrationForm;
 import ru.kpfu.itis.Mironov.SE.forms.UserSchetForm;
 import ru.kpfu.itis.Mironov.SE.services.MyUserService;
 import ru.kpfu.itis.Mironov.SE.services.TarifsService;
@@ -31,13 +26,15 @@ public class UserSchetPageController {
     TarifsService tarifsService;
     @Autowired
     MyUserService userService;
-    @Autowired
-    ModelAndView modelUserSchet;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userSchetDoGet(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("UserSchet");
+        MyUser user = userService.getByEmail(request.getRemoteUser());
+        mav.getModelMap().put("activeUser", user);
+        mav.getModelMap().addAttribute("tarifs", tarifsService.getAll());
         request.setAttribute(ATTR_USERSCHET_FORM, new UserSchetForm());
-        modelUserSchet.getModelMap().addAttribute("tarifs", tarifsService.getAll());
-        return modelUserSchet;
+        return mav;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -45,48 +42,48 @@ public class UserSchetPageController {
                                         BindingResult bindingResult,
                                         HttpServletRequest request,
                                         @RequestParam("tarif") int tarifId){
+        ModelAndView mav = new ModelAndView("UserSchet");
         MyUser user = userService.getByEmail(request.getRemoteUser());
         Tarif tarif = tarifsService.getById(user.getTarif().getIdTarif());
-        modelUserSchet.getModelMap().put("tarifs", tarifsService.getAll());
+        mav.getModelMap().put("activeUser", user);
+        mav.getModelMap().put("tarifs", tarifsService.getAll());
         if (bindingResult.hasErrors()) {
-            return modelUserSchet;
+            return mav;
         }
         if(userSchetForm.getLastNow() != 99999){
-            modelUserSchet.getModelMap().put("schetNumber",userSchetForm.getSchetNumber());
-            modelUserSchet.getModelMap().put("lastNow", userSchetForm.getLastNow() +"");
+            mav.getModelMap().put("schetNumber",userSchetForm.getSchetNumber());
+            mav.getModelMap().put("lastNow", userSchetForm.getLastNow() +"");
             if ( tarif != null && tarifId == tarif.getIdTarif()) {
                 int last = user.getLast();
                 double cost = tarif.getCost();
                 double dolg = (userSchetForm.getLastNow() - last) * cost;
-                modelUserSchet.getModelMap().put("dolg", dolg +"");
+                mav.getModelMap().put("dolg", dolg +"");
             }else{
-                modelUserSchet.getModelMap().put("date", userSchetForm.getDate());
-                modelUserSchet.getModelMap().put("er_mes", "uncor_tarif");
-                return modelUserSchet;
+                mav.getModelMap().put("date", userSchetForm.getDate());
+                mav.getModelMap().put("er_mes", "uncor_tarif");
+                return mav;
             }
         }else{
-            modelUserSchet.getModelMap().put("er_mes", "changeSchetchik");
+            mav.getModelMap().put("er_mes", "changeSchetchik");
         }
-        return modelUserSchet;
+        return mav;
     }
 
-    @RequestMapping(value = "/pay", method = RequestMethod.POST)
+    @RequestMapping(value = "/pay", method = RequestMethod.GET)
     public ModelAndView userSchetPayDoGet(HttpServletRequest request){
+        ModelAndView mav = new ModelAndView("UserSchet");
         Double dolg = Double.parseDouble(request.getParameter("dolg").replace(",", "."));
         Integer lastNow = Integer.parseInt(request.getParameter("lastNow"));
-        modelUserSchet.getModelMap().addAttribute("tarifs", tarifsService.getAll());
-
-
+        mav.getModelMap().addAttribute("tarifs", tarifsService.getAll());
+        System.out.println(dolg  + " " + lastNow);
         if (dolg == null || dolg <= 0 || (lastNow+"").length() != 5){
-            modelUserSchet.getModelMap().addAttribute("er_mes", "payError") ;
-            return new ModelAndView("redirect:/userschet");
+            mav.getModelMap().addAttribute("er_mes", "payError") ;
+            return mav;
         }
-
-        MyUser user = userService.getByEmail(request.getRemoteUser());
+        MyUser user = userService.getByLogin(request.getRemoteUser());
         user.setLast(Integer.parseInt(lastNow +""));
-        userService.addEntity(user);
-        modelUserSchet.getModelMap().clear();
-        return new ModelAndView("redirect:/userschet");
+        userService.paySchet(user);
+        return mav;
     }
 
 }

@@ -12,9 +12,9 @@ import java.util.List;
  * Created by Юра on 24.04.2016.
  */
 @Service
-public class FirmService {
+public class FirmsService{
     @Autowired
-    public FirmsRepository firmsRepository;
+    FirmsRepository firmsRepository;
     @Transactional
     public Firm addEntity(Firm firm) {
         return firmsRepository.saveAndFlush(firm);
@@ -25,10 +25,19 @@ public class FirmService {
         firmsRepository.delete(id);
     }
 
+    public Firm getByName(String name) {
+        return firmsRepository.findByNameF(name);
+    }
+
+    @Transactional
+    public Firm editEntity(Firm firm) {
+        this.delete(this.getByName(firm.getNameF()).getIdFirm());
+        return this.addEntity(firm);
+    }
+
     public List<Firm> getAll() {
         return firmsRepository.findAll();
     }
-
     public List<Firm> get10NewsByPageNumber(int counter){
         counter *=10;
         List<Firm> newses = this.getAll();
@@ -39,7 +48,4 @@ public class FirmService {
     public Firm getById(long produce) {
         return firmsRepository.findByIdFirm(produce);
     }
-
-
-
 }
