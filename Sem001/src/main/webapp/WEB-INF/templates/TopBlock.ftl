@@ -58,7 +58,7 @@
         <#if !model["currentUser"]??>
             <#if path?? && path != "error404">
                 <form class="login-form" action="j_spring_security_check" method="post">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
                     <div class="username">
                         <input id="j_username" name="j_username" class="form-control" placeholder="Email address"
                                size="20" maxlength="50" type="email" required autofocus/>
@@ -95,6 +95,9 @@
                             <li><a tabindex="-1" href="/changepass">Сменить пароль</a></li>
                             <li><a tabindex="-1" href="/changetarif">Сменить тариф</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#myModalProfile">Мой профиль</a>
+                                <#if model["currentUser"]?? && model["currentUser"].isAdmin()>
+                                    <li><a tabindex="-1" href="/admin/activateuser">Админка</a></li>
+                                </#if>
                             </li>
                             <#if model["path"] == "/advices">
                                 <li><a href="#" data-toggle="modal" data-target="#myModalAddAdv">Добавить совет</a>

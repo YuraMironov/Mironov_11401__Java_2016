@@ -1,6 +1,5 @@
 package ru.kpfu.itis.Mironov.SE.forms.constarint.validator.impl;
 
-import ru.kpfu.itis.Mironov.SE.forms.RegistrationForm;
 import ru.kpfu.itis.Mironov.SE.forms.constarint.validator.PasswordDuplicate;
 
 import javax.validation.ConstraintValidator;

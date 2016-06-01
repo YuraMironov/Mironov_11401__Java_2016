@@ -12,8 +12,8 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <center>Форма смены тарифа.</center>
             <br>
-            <#if model["message"]??>
-                <#if model["message"] == "success">
+            <#if message??>
+                <#if message == "success">
                     <div style="color:green;">Заявка принята</div>
                 <#else>
                     <div style="color:red;">Не должно быть пустых полей</div>
@@ -22,7 +22,6 @@
             </#if>
             <span class="label label-default">Выберите фирму</span>
             <select class="form-control" id="optionDefault" name="produce" required oninput="getTarif()">
-                <#if model["firms"]??> <#assign firms = model["firms"]></#if>
                 <option selected>Выберите фирму</option>
                 <#list  firms as firm>
                     <option value="${firm.getIdFirm()}">${firm.getNameF()}</option>

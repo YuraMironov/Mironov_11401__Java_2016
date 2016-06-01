@@ -20,7 +20,7 @@
 <div class="content">
     <div class="SchetBlock">
     <@form.form commandName="registration_form" action="/reg" method="post" onsubmit="wannaSub();">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
         <span class="label label-default">Логин</span>
         <@form.input path="login" type="text" id="login" name="login" class="form-control" placeholder="Имя пользователя"
         oninput="validLogin()"/>
@@ -46,7 +46,6 @@
         <span class="label label-default">Укажите своего поставщика</span>
 
         <select class="form-control" id="optionDefault" name="produce" required>
-            <#if model["firms"]??> <#assign firms = model["firms"]></#if>
             <#list  firms as firm>
                 <option value="${firm.getIdFirm()}">${firm.getNameF()}</option>
             </#list>
@@ -54,7 +53,6 @@
 
         <span class="label label-default">Тариф</span>
         <select class="form-control" name="tarif" required>
-            <#if model["tarifs"]??> <#assign tarifs = model["tarifs"]></#if>
             <#list tarifs as tarif>
                 <option value="${tarif.getIdTarif()}">${tarif.getNameT()}</option>
             </#list>
@@ -65,7 +63,7 @@
         placeholder="Показание счетчика при последней оплате" oninput="validSchetchik()"/>
         <div class="res 5" id="res5"><@form.errors path="schetchik"/></div>
         <br>
-        <input type="submit" class="btn btn-default" value="Зарегестрироваться">
+        <input type="submit" class="btn btn-default" value="Зарегистрироваться">
     </@form.form>
     </div>
 </div>

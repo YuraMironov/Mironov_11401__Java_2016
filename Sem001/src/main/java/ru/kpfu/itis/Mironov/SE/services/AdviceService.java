@@ -15,8 +15,9 @@ import java.util.List;
  */
 @Service
 public class AdviceService{
+
     @Autowired
-    AdviceRepository adviceRepository;
+    public AdviceRepository adviceRepository;
     @Transactional
     public Advice addEntity(Advice advice) {
         return adviceRepository.saveAndFlush(advice);
@@ -29,14 +30,6 @@ public class AdviceService{
 
     public Advice getByName(String advname) {
         return adviceRepository.findByAdvname(advname);
-    }
-
-    @Transactional
-    public Advice editEntity(Advice advice) {
-        long id = this.getByName(advice.getAdvname()).getId();
-        this.delete(id);
-        advice.setId(id);
-        return this.addEntity(advice);
     }
 
     public List<Advice> getAll() {
@@ -54,10 +47,6 @@ public class AdviceService{
         List<Advice> advices = this.getAll();
         int size = advices.size();
         return advices.subList(size - 7, size);
-    }
-
-    public List<Advice> getByAuthorId(long id) {
-        return adviceRepository.findByAuthorId(id);
     }
 
     public Advice getById(Long l) {

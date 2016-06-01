@@ -14,7 +14,7 @@
     <tbody id="tbody">
     <tr>
         <form action="/admin/edit/newses/add" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td><input type="text" name="title" /></td>
             <td><textarea name="body" cols="80" rows="3"></textarea></td>
             <td><input type="submit" value="Добавить"/></td>
@@ -24,14 +24,14 @@
     <tr>
         <form action="/admin/edit/newses/save" method="post">
             <input type="hidden" name="nid" value="${news.getIdNews()}"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td><input type="text" name="title" value="${news.getTitle()}"/></td>
             <td><textarea name="body" cols="80" rows="3">${news.getBody()}</textarea></td>
             <td><input type="submit" value="Сохранить"/></td>
         </form>
         <form action="/admin/edit/newses/delete" method="post">
             <input type="hidden" name="nid" value="${news.getIdNews()}"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td><input type="submit" value="Удалить"/></td>
         </form>
     </tr>

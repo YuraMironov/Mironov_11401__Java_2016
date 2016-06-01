@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <bean name="modelUserSchet" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="UserSchet"/>
+    </bean>
+    <bean name="modelTarifs" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="Tarifs"/>
+    </bean>
+    <bean name="modelReg" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="Reg"/>
+    </bean>
+    <bean name="modelNewses" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="Newses"/>
+    </bean>
+
+    <bean name="modelLogin" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="security/login"/>
+    </bean>
+    <bean name="modelHome" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="Home"/>
+    </bean>
+    <bean name="modelFirms" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="Firms"/>
+    </bean>
+    <bean name="modelError404" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="error404"/>
+    </bean>
+    <bean name="modelChT" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="ChangeTarif"/>
+    </bean>
+    <bean name="modelChP" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="ChangePassword"/>
+    </bean>
+    <bean name="modelAdvices" class="org.springframework.web.servlet.ModelAndView">
+        <property name="viewName" value="Advices"/>
+    </bean>
+
+</beans>

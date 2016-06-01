@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class NewsesService{
     @Autowired
-    NewsesRepository newsesRepository;
+    public NewsesRepository newsesRepository;
     @Transactional
     public News addEntity(News news) {
         return newsesRepository.saveAndFlush(news);
@@ -23,16 +23,6 @@ public class NewsesService{
     @Transactional
     public void delete(long id) {
         newsesRepository.delete(id);
-    }
-
-    public News getByName(String title) {
-        return newsesRepository.findByTitle(title);
-    }
-
-    @Transactional
-    public News editEntity(News news) {
-        this.delete(this.getByName(news.getTitle()).getIdNews());
-        return this.addEntity(news);
     }
 
     public List<News> getAll() {

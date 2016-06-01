@@ -17,7 +17,7 @@
     <tbody id="tbody">
     <tr>
         <form action="/admin/edit/firms/add" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td><input type="text" name="nameF"/> </td>
             <td><textarea cols="20" rows="1" type="text" name="director"></textarea></td>
             <td><textarea cols="40" rows="3" type="text" name="addres"></textarea></td>
@@ -30,7 +30,7 @@
     <tr>
         <form action="/admin/edit/firms/save" method="post">
             <input type="hidden" name="fid" value="${firm.getIdFirm()}"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td>${firm.getNameF()}</td>
             <td><textarea name="director" cols="20" rows="2">${firm.getDirector()}</textarea></td>
             <td><textarea cols="40" rows="3" type="text" name="addres">${firm.getAddres()}</textarea></td>
@@ -40,7 +40,7 @@
         </form>
         <form action="/admin/edit/firms/delete" method="post">
             <input type="hidden" name="fid" value="${firm.getIdFirm()}"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td><input type="submit" value="Удалить"/></td>
         </form>
     </tr>

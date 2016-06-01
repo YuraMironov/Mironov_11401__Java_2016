@@ -1,6 +1,7 @@
 package ru.kpfu.itis.Mironov.SE.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Юра on 21.04.2016.

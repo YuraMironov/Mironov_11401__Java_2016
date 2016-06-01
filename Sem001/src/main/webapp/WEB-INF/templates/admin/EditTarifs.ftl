@@ -16,7 +16,7 @@
     <tbody id="tbody">
     <tr>
         <form action="/admin/edit/tarifs/add" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td><input type="text" name="nameT"/> </td>
             <td><textarea cols="40" rows="3" type="text" name="specialty"></textarea></td>
             <td><input type="number" step="0.01" name="cost"/> </td>
@@ -32,7 +32,7 @@
     <tr>
         <form action="/admin/edit/tarifs/save" method="post">
             <input type="hidden" name="tid" value="${tarif.getIdTarif()}"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td>${tarif.getNameT()}</td>
             <td><textarea name="specialty" cols="40" rows="3">${tarif.getSpecialty()}</textarea></td>
             <td><input name="cost" step="0.01" value="${tarif.getCost()}"/></td>
@@ -41,7 +41,7 @@
         </form>
         <form action="/admin/edit/tarifs/delete" method="post">
             <input type="hidden" name="tid" value="${tarif.getIdTarif()}"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td><input type="submit" value="Удалить"/></td>
         </form>
     </tr>

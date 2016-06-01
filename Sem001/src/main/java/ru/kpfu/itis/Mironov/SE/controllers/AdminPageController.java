@@ -1,34 +1,39 @@
 package ru.kpfu.itis.Mironov.SE.controllers;
 
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.expression.spel.ast.LongLiteral;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ru.kpfu.itis.Mironov.SE.components.UserPdfCreator;
 import ru.kpfu.itis.Mironov.SE.entities.*;
 import ru.kpfu.itis.Mironov.SE.services.*;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by Юра on 07.05.2016.
  */
+
 @Controller
 @RequestMapping("/{path:admin}")
-public class AdminsPageController {
+public class AdminPageController {
     @Autowired
     MyUserService myUserService;
     @Autowired
-    ClaimsTarifService claimsTarifService;
+    ClaimTarifService claimTarifService;
     @Autowired
     TarifsService tarifsService;
     @Autowired
-    private FirmsService firmsService;
+    private FirmService firmService;
     @Autowired
     PhoneService phoneService;
     @Autowired
@@ -58,7 +63,7 @@ public class AdminsPageController {
 
     @RequestMapping(value = "/edit/newses/add", method = RequestMethod.POST)
     public String editNewsAddDoPOST(@RequestParam("title") String title,
-                                     @RequestParam("body") String body) {
+                                    @RequestParam("body") String body) {
         News news = new News();
         news.setBody(body);
         news.setTitle(title);
@@ -107,7 +112,7 @@ public class AdminsPageController {
                                       @RequestParam("addres") String addres,
                                       @RequestParam("phone") String phone,
                                       @RequestParam("raiting") String raiting) {
-        Firm firm = firmsService.getById(Long.parseLong(fid));
+        Firm firm = firmService.getById(Long.parseLong(fid));
         firm.setDirector(director);
         firm.setAddres(addres);
         firm.setRaiting(Integer.parseInt(raiting));
@@ -115,14 +120,14 @@ public class AdminsPageController {
         phone1.setNumbers(phone);
         phoneService.addEntity(phone1);
         firm.setPhone(phone1);
-        firmsService.addEntity(firm);
+        firmService.addEntity(firm);
 
         return "redirect:/admin/edit/firms";
     }
 
     @RequestMapping(value = "/edit/firms/delete", method = RequestMethod.POST)
     public String editFirmsDeleteDoPOST(@RequestParam("fid") String fid) {
-        firmsService.delete(Long.parseLong(fid));
+        firmService.delete(Long.parseLong(fid));
         return "redirect:/admin/edit/firms";
     }
 
@@ -137,7 +142,7 @@ public class AdminsPageController {
         firm.setDirector(director);
         firm.setNameF(nameF);
         firm.setRaiting(Integer.parseInt(raiting));
-        firmsService.addEntity(firm);
+        firmService.addEntity(firm);
         Phone phone1 = phoneService.getById(firm.getIdFirm());
         phone1.setNumbers(phone);
         phoneService.addEntity(phone1);
@@ -149,7 +154,7 @@ public class AdminsPageController {
         ModelAndView mav = new ModelAndView("admin/Main");
         mav.getModelMap().put("footer", "EditFirms.ftl");
         mav.getModelMap().put("tarifs", tarifsService.getAll());
-        mav.getModelMap().put("firms", firmsService.getAll());
+        mav.getModelMap().put("firms", firmService.getAll());
         return mav;
     }
 
@@ -180,7 +185,7 @@ public class AdminsPageController {
         tarif.setNameT(nameT);
         tarif.setCost(Double.parseDouble(cost.replaceAll(",", ".")));
         tarif.setSpecialty(specialty);
-        tarif.setProduce(firmsService.getById(Long.parseLong(fid)));
+        tarif.setProduce(firmService.getById(Long.parseLong(fid)));
         tarifsService.addEntity(tarif);
         return "redirect:/admin/edit/tarifs";
     }
@@ -190,19 +195,20 @@ public class AdminsPageController {
         ModelAndView mav = new ModelAndView("admin/Main");
         mav.getModelMap().put("footer", "EditTarifs.ftl");
         mav.getModelMap().put("tarifs", tarifsService.getAll());
-        mav.getModelMap().put("firms", firmsService.getAll());
+        mav.getModelMap().put("firms", firmService.getAll());
         return mav;
     }
 
     @RequestMapping(value = "/claimstarif/ok", method = RequestMethod.POST)
-    public ModelAndView claimstarifOk(@RequestParam("uid") Long uid, @RequestParam("tid") Integer tid,
+    public ModelAndView claimstarifOk(@RequestParam("uid") Long uid,
+                                      @RequestParam("tid") Integer tid,
                                       @RequestParam("ctid") Integer ctid) {
         MyUser myUser = myUserService.getById(uid);
         myUser.setTarif(tarifsService.getById(tid));
         myUserService.changeTarif(myUser);
-        claimsTarifService.delete(ctid);
+        claimTarifService.delete(ctid);
         ModelAndView mav = new ModelAndView("admin/Main");
-        mav.getModelMap().put("claims", claimsTarifService.getAll());
+        mav.getModelMap().put("claims", claimTarifService.getAll());
         mav.getModelMap().put("footer", "ClaimsTarif.ftl");
         return mav;
     }
@@ -210,8 +216,8 @@ public class AdminsPageController {
     @RequestMapping(value = "/claimstarif/notok", method = RequestMethod.POST)
     public ModelAndView claimstarifNotOk(@RequestParam("tid") Integer tid) {
         ModelAndView mav = new ModelAndView("admin/Main");
-        claimsTarifService.delete(tid);
-        mav.getModelMap().put("claims", claimsTarifService.getAll());
+        claimTarifService.delete(tid);
+        mav.getModelMap().put("claims", claimTarifService.getAll());
         mav.getModelMap().put("footer", "ClaimsTarif.ftl");
         return mav;
     }
@@ -219,14 +225,23 @@ public class AdminsPageController {
     @RequestMapping(value = "/claimstarif", method = RequestMethod.GET)
     public ModelAndView claimstarif() {
         ModelAndView mav = new ModelAndView("admin/Main");
-        mav.getModelMap().put("claims", claimsTarifService.getAll());
+        mav.getModelMap().put("claims", claimTarifService.getAll());
         mav.getModelMap().put("footer", "ClaimsTarif.ftl");
         return mav;
     }
 
+    @RequestMapping(value = "/allusers/change_role", method = RequestMethod.POST)
+    public String userChangeRole(@RequestParam("uid") String uid,
+                                 @RequestParam("role") String role){
+        MyUser myUser = myUserService.getById(Long.parseLong(uid));
+        myUser.setRole(role.toUpperCase());
+        myUserService.addEntity(myUser);
+        return "redirect:/admin/allusers";
+    }
     @ResponseBody
     @RequestMapping(value = "/allusers/sort", method = RequestMethod.GET)
-    public List<MyUser> sort(@RequestParam("sort") String sort, @RequestParam(value = "new") String newUsers) {
+    public List<MyUser> sort(@RequestParam("sort") String sort,
+                             @RequestParam(value = "new") String newUsers) {
         List<MyUser> users;
         if (newUsers == null || newUsers.equals("") || newUsers.equals("false")) {
             users = myUserService.getAll(sort);
@@ -236,10 +251,10 @@ public class AdminsPageController {
         return users;
     }
 
-    @RequestMapping(value = "/allusers/document", method = RequestMethod.GET )
+    @RequestMapping(value = "/allusers/document", method = RequestMethod.GET , produces = "application/pdf")
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public FileSystemResource getPdf() throws IOException, com.itextpdf.text.DocumentException {
+    public FileSystemResource getPdf() throws IOException, DocumentException {
         String filePath = userPdfCreator.pdfCreate();
         return new FileSystemResource(filePath);
     }
@@ -253,7 +268,8 @@ public class AdminsPageController {
         return mav;
 
     }
-
+    @Autowired
+    HttpServletRequest request;
     @RequestMapping(value = "/activateuser", method = RequestMethod.GET)
     public ModelAndView activateuser() {
         ModelAndView mav = new ModelAndView("admin/Main");
@@ -264,7 +280,7 @@ public class AdminsPageController {
     }
 
     @RequestMapping(value = "/activateuser", method = RequestMethod.POST)
-    public String activateuserPOST(HttpServletResponse response, @RequestParam("uid") Long uid) {
+    public String activateuserPOST(@RequestParam("uid") Long uid) {
         myUserService.activateUserById(uid, true);
         return "redirect:/admin/activateuser";
     }
@@ -277,7 +293,8 @@ public class AdminsPageController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/user/uid/non_locked")
-    public MyUser userAPInon_locked(@RequestParam("uid") Long uid, @RequestParam("checked") Integer checked) {
+    public MyUser userAPInon_locked(@RequestParam("uid") Long uid,
+                                    @RequestParam("checked") Integer checked) {
         MyUser myUser = myUserService.getById(uid);
         if (checked != null) {
             boolean enabled = checked == 1;

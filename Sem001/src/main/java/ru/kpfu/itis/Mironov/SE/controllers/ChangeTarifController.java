@@ -1,16 +1,14 @@
 package ru.kpfu.itis.Mironov.SE.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Role;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.kpfu.itis.Mironov.SE.entities.ClaimTarif;
 import ru.kpfu.itis.Mironov.SE.entities.Tarif;
-import ru.kpfu.itis.Mironov.SE.services.ClaimsTarifService;
-import ru.kpfu.itis.Mironov.SE.services.FirmsService;
+import ru.kpfu.itis.Mironov.SE.services.ClaimTarifService;
+import ru.kpfu.itis.Mironov.SE.services.FirmService;
 import ru.kpfu.itis.Mironov.SE.services.MyUserService;
 import ru.kpfu.itis.Mironov.SE.services.TarifsService;
 
@@ -24,40 +22,46 @@ import java.util.List;
 @RequestMapping("/{path:changetarif}")
 public class ChangeTarifController {
     @Autowired
-    FirmsService firmsService;
+    FirmService firmService;
     @Autowired
     TarifsService tarifsService;
     @Autowired
     MyUserService userService;
     @Autowired
-    ClaimsTarifService claimsTarifService;
+    ClaimTarifService claimTarifService;
+    @Autowired
+    private ModelAndView modelChT;
+
     @RequestMapping(method = RequestMethod.GET)
-    public String changeTarifDoPost(@ModelAttribute("model") ModelMap model) {
-        model.addAttribute("firms", firmsService.getAll());
-        return "ChangeTarif";
+    public ModelAndView changeTarifDoPost() {
+        modelChT.getModelMap().addAttribute("firms", firmService.getAll());
+        return modelChT;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String changeTarifDoPost(@ModelAttribute("model") ModelMap model,
-                                    HttpServletRequest request, @RequestParam("produce") Long produce,
-                                    @RequestParam("tarif") Long tarif, @RequestParam("comment") String comment) {
-        model.addAttribute("firms", firmsService.getAll());
+    public ModelAndView changeTarifDoPost(HttpServletRequest request,
+                                          @RequestParam("produce") Long produce,
+                                          @RequestParam("tarif") Long tarif,
+                                          @RequestParam("comment") String comment) {
+        modelChT.getModelMap().addAttribute("firms", firmService.getAll());
         ClaimTarif ct = new ClaimTarif();
-        if (firmsService.getById(produce) != null) {
+        if (firmService.getById(produce) != null) {
             ct.setNewtarifid(tarif);
             ct.setComment(comment);
             ct.setUserid(userService.getByEmail(request.getRemoteUser()).getId());
-            claimsTarifService.addEntity(ct);
-            model.addAttribute("message", "success");
-        }else{
-        model.addAttribute("message", "error");}
-        return "ChangeTarif";
+            claimTarifService.addEntity(ct);
+            modelChT.getModelMap().clear();
+            modelChT.getModelMap().addAttribute("message", "success");
+        } else {
+            modelChT.getModelMap().addAttribute("message", "error");
+        }
+        return modelChT;
     }
 
     @ResponseBody
     @RequestMapping(value = "/tarifs", method = RequestMethod.GET)
     public List<Tarif> changeTarifDoGET(@ModelAttribute("model") ModelMap model) {
-        model.addAttribute("firms", firmsService.getAll());
+        model.addAttribute("firms", firmService.getAll());
         return tarifsService.getAll();
     }
 }

@@ -18,7 +18,7 @@
     <tr>
         <form action="/admin/edit/advices/save" method="post">
             <input type="hidden" name="aid" value="${advice.getId()}"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td><input type="text" name="advname" value="${advice.getAdvname()}"/></td>
             <td><textarea name="advbody" cols="20" rows="2">${advice.getAdvbody()}</textarea></td>
             <td><textarea cols="40" rows="3" type="text" name="filesrc">${advice.getFilesrc()}</textarea></td>
@@ -27,7 +27,7 @@
         </form>
         <form action="/admin/edit/advices/delete" method="post">
             <input type="hidden" name="aid" value="${advice.getId()}"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
             <td><input type="submit" value="Удалить"/></td>
         </form>
     </tr>

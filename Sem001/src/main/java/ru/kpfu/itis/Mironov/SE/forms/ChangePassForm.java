@@ -3,7 +3,6 @@ package ru.kpfu.itis.Mironov.SE.forms;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import ru.kpfu.itis.Mironov.SE.forms.constarint.validator.PasswordDuplicate;
-import ru.kpfu.itis.Mironov.SE.forms.constarint.validator.UniqueEmail;
 
 import javax.validation.constraints.Pattern;
 
